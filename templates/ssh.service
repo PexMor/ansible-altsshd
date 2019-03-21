@@ -1,0 +1,19 @@
+[Unit]
+Description=OpenBSD Secure Shell server ({{ssh.name}})
+After=network.target auditd.service
+ConditionPathExists=!/etc/ssh/{{ssh.id}}_not_to_be_run
+
+[Service]
+EnvironmentFile=-/etc/default/{{ssh.id}}
+ExecStartPre=/usr/sbin/sshd -t
+ExecStart=/usr/sbin/sshd -D $SSHD_OPTS
+ExecReload=/usr/sbin/sshd -t
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+Type=notify
+
+[Install]
+WantedBy=multi-user.target
+Alias={{ssh.id}}d.service

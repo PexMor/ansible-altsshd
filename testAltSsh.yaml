@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: no
+  vars:
+    ssh:
+      id: ssh3
+      name: 'SSH no.3'
+      port: '3030'
+  roles:
+  - role: altssh

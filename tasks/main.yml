@@ -1,0 +1,25 @@
+---
+- name: Build the ssh config
+  template:
+    src: 'sshd_config'
+    dest: '/etc/ssh/{{ssh.id}}d_config'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+- name: Build the ssh default file
+  template:
+    src: 'default-ssh'
+    dest: '/etc/default/{{ssh.id}}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+- name: Build the ssh service file
+  template:
+    src: 'ssh.service'
+    dest: '/etc/systemd/system/{{ssh.id}}.service'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+- name: just force systemd to reread configs (2.4 and above)
+  systemd:
+    daemon_reload: yes
